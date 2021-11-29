@@ -1,11 +1,22 @@
 import './App.css';
+import NavBar from './components/NavBar';
+import ForecastCard from './components/ForecastCard';
+import React, { useState } from "react";
 
-function App() {
+const App = () => {
+  const [city, setCity] = useState("");
+
+  const getLocation = (target) => {
+    setCity(target);
+  }
+
   return (
     <div className="App">
-      <h1>Hello World</h1>
+      <NavBar callBack={getLocation}/>
+      <ForecastCard location={city}/>
     </div>
   );
 }
 
 export default App;
+
