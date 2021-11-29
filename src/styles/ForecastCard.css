@@ -1,0 +1,19 @@
+.CardContainer{
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+}
+
+.CurrentWeatherIcon {
+    width: 100px;
+    height: 100px;
+    animation-name: sun;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+  }
+
+.temptValue{
+    font-size: 3.5rem;
+    line-height: .96em;
+    font-weight: 400;
+}
