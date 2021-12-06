@@ -5,8 +5,8 @@ import React, { useEffect,useState } from "react";
 
 const App = () => {
   const [city, setCity] = useState("");
-  const [latitude,setLatitude] = useState(false);
-  const [longitude,setLongitude] = useState(false);
+  //const [latitude,setLatitude] = useState(false);
+  //const [longitude,setLongitude] = useState(false);
 
   const getLocation = (target) => {
     setCity(target);
@@ -29,7 +29,7 @@ const App = () => {
   return (
     <div className="App">
       <NavBar callBack={getLocation}/>
-      <ForecastCard location={city} lat={latitude} lon={longitude}/>
+      <ForecastCard location={city} lat="false" lon="false"/>
     </div>
   );
 }
