@@ -41,7 +41,7 @@ const mapRequiredData = (oData,timeZone)=>{
         visibility: oData.visibility,
         windSpeed: oData.wind_speed,
         description: oData.weather[0].description,
-        icon: "http://openweathermap.org/img/wn/" +`${oData.weather[0].icon}` + ".png"
+        icon: `http://openweathermap.org/img/wn/${oData.weather[0].icon}.png`
     }
 }
 
@@ -57,7 +57,7 @@ const hourlyInfo = (aData,timeZone) =>{
             visibility: oData.visibility,
             windSpeed: oData.wind_speed,
             description: oData.weather[0].description,
-            icon: "http://openweathermap.org/img/wn/" +`${oData.weather[0].icon}` + ".png",
+            icon: `http://openweathermap.org/img/wn/${oData.weather[0].icon}.png`,
         })
     })
     return aHourlyInfo;
@@ -78,7 +78,7 @@ const dailyInfo = (aData,timeZone)=>{
             sunrise: oData.sunrise,
             sunset: oData.sunset,
             description: oData.weather[0].description,
-            icon: "http://openweathermap.org/img/wn/" +`${oData.weather[0].icon}` + ".png",
+            icon: `http://openweathermap.org/img/wn/${oData.weather[0].icon}.png`,
         })
     })
 

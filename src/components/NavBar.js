@@ -2,7 +2,7 @@ import { Form , Button } from "react-bootstrap";
 import { useState } from "react";
 import '../styles/NavBar.css';
 
-export default ({callBack}) => {
+const Navbar = ({callBack}) => {
 
     const [currentCity, setCurrentCity] = useState("");
     const [placeholder, setPlaceholder] = useState("Enter the location");
@@ -59,4 +59,4 @@ export default ({callBack}) => {
     
 }
 
-
+export default Navbar;

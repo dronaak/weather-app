@@ -3,7 +3,7 @@ import ForecastInfo from '../mapping/AllInfo.js';
 import '../styles/ForecastCard.css';
 import DailyInfo from './DailyInfo';
 
-export default (props) => {
+const Forecast =  (props) => {
   const[error, setError] = useState(null);
   const[isLoaded, setIsLoaded] = useState(false);
   const[country,setCountry] = useState();
@@ -160,3 +160,5 @@ export default (props) => {
   
   return CurrentWeather();
 }
+
+export default Forecast;
