@@ -2,9 +2,9 @@ import '../styles/DailyInfo.css';
 
 const dailyInfo = (props)=>{
 
-    let itemList=props.dailyInfo.map((item)=>{
+    let itemList=props.dailyInfo.map((item,index)=>{
 
-        return <div>
+        return <div key={index}>
             <div className="row">
                 <div className="col-2 pt-5">
                    <strong>{item.day}</strong>

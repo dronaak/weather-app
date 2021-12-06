@@ -14,13 +14,16 @@ const Forecast =  (props) => {
 
   useEffect(() => { 
 
-    if (!props.location && !props.lat && !props.lon) {
+    if (!props.location) {
       setError(null);
       setIsLoaded(false);
       return;
     }
     
-    const apiKey = "e2d8fad26c0d32a8458b03ece38bb876";
+    // Key one
+    const apiKey = "e2d8fad26c0d32a8458b03ece38bb876"; 
+    // Key two
+    //const apiKey = "bdece7105123bf6eac7e12be686f5cc7";
     const geoURL = `http://api.openweathermap.org/geo/1.0/direct?q=${props.location}&limit=1&appid=${apiKey}`;
     //const URLOne = `http://api.openweathermap.org/data/2.5/weather?q=${props.location}&APPID=${apiKey}&units=metric&type=hours`;
 
@@ -73,7 +76,7 @@ const Forecast =  (props) => {
           setError(error);
         })  
     //} else {
-      getWeatherInfo(props.lat,props.lon,apiKey);
+    // getWeatherInfo(props.lat,props.lon,apiKey);
     //}
     
   }, [props])
