@@ -3,14 +3,14 @@ import ForecastInfo from '../mapping/AllInfo.js';
 import '../styles/ForecastCard.css';
 import DailyInfo from './DailyInfo';
 
-export default (props) => {
+const Forecast =  (props) => {
   const[error, setError] = useState(null);
   const[isLoaded, setIsLoaded] = useState(false);
   const[country,setCountry] = useState();
   const[city,setCity] = useState();
   const[current,setCurrent] = useState({});
   const[daily,setDaily] = useState([]);
-  const[hourly,setHourly] = useState([]);
+  //const[hourly,setHourly] = useState([]);
 
   useEffect(() => { 
 
@@ -36,7 +36,7 @@ export default (props) => {
             let weatherInfo = ForecastInfo(result);
             setCurrent(weatherInfo.current);
             setDaily(weatherInfo.daily);
-            setHourly(weatherInfo.hour);
+            //setHourly(weatherInfo.hour);
             console.log(result);
           }
         },
@@ -50,7 +50,7 @@ export default (props) => {
       })
     }
 
-    if ( !props.lat && !props.lon) {
+    //if ( !props.lat && !props.lon) {
       fetch(geoURL)
         .then(res =>res.json())
         .then(
@@ -72,9 +72,9 @@ export default (props) => {
           setIsLoaded(true);
           setError(error);
         })  
-    } else {
+    //} else {
       getWeatherInfo(props.lat,props.lon,apiKey);
-    }
+    //}
     
   }, [props])
 
@@ -160,3 +160,5 @@ export default (props) => {
   
   return CurrentWeather();
 }
+
+export default Forecast;
