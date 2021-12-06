@@ -1,0 +1,13 @@
+.container{
+    width: 65% !important;
+}
+
+.textLeft{
+    text-align: left;
+}
+
+.maxTemp{
+    font-size: 1.5rem;
+    line-height: .96em;
+    font-weight: 400;
+}

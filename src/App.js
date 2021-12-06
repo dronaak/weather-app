@@ -13,7 +13,9 @@ const App = () => {
   return (
     <div className="App">
       <NavBar callBack={getLocation}/>
-      <ForecastCard location={city}/>
+      {/* <div className="container"> */}
+       <ForecastCard location={'delhi'}/>
+      {/* </div> */}
     </div>
   );
 }

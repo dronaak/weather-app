@@ -41,15 +41,15 @@ export default ({callBack}) => {
     }
 
     return (
-        <nav className="navbar navbar-light bg-light justify-content-between">
-            <h1 className="navbar-brand titleStyle px-3">Weather Info</h1>
+        <nav className="navbar navStyle navbar-light bg-dark justify-content-between">
+            <h5 className="px-3 titleStyle">Weather Info</h5>
             <Form className="d-flex">
                 <input
                     value={currentCity}
                     onChange={handleInputChange}
                     onClick={handleInputClick}
                     onKeyPress={handleKeyPress}
-                    className="SearchInput me-3"
+                    className="SearchInput me-3 rounded"
                     placeholder={placeholder}
                 />
                 <Button className="me-3" onClick={handleButtonClick} variant="secondary">Search</Button>
