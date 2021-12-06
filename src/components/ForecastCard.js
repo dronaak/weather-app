@@ -24,8 +24,8 @@ const Forecast =  (props) => {
     const apiKey = "e2d8fad26c0d32a8458b03ece38bb876"; 
     // Key two
     //const apiKey = "bdece7105123bf6eac7e12be686f5cc7";
-    const geoURL = `http://api.openweathermap.org/geo/1.0/direct?q=${props.location}&limit=1&appid=${apiKey}`;
-    //const URLOne = `http://api.openweathermap.org/data/2.5/weather?q=${props.location}&APPID=${apiKey}&units=metric&type=hours`;
+    const geoURL = `https://api.openweathermap.org/geo/1.0/direct?q=${props.location}&limit=1&appid=${apiKey}`;
+    //const URLOne = `https://api.openweathermap.org/data/2.5/weather?q=${props.location}&APPID=${apiKey}&units=metric&type=hours`;
 
     const getWeatherInfo = (lat,long,apiKey) => {
       const forecastURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&appid=${apiKey}&units=metric`;
