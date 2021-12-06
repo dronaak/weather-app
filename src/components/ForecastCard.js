@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
-import ForecastInfo from '../hooks/GetForecastInfo.js';
+import ForecastInfo from '../mapping/AllInfo.js';
 import '../styles/ForecastCard.css';
-import { ReactComponent as HighIcon } from '../assets/high-icon.svg';
-import { ReactComponent as HumidityIcon } from '../assets/humidity-icon.svg';
-import { ReactComponent as LowIcon } from '../assets/low-icon.svg';
-import { ReactComponent as PressureIcon } from '../assets/pressure-icon.svg';
-import { ReactComponent as WindIcon } from '../assets/wind-icon.svg';
+import DailyInfo from './DailyInfo';
 
 export default (props) => {
   const[error, setError] = useState(null);
   const[isLoaded, setIsLoaded] = useState(false);
-  const[info,setInfo] = useState({});
+  const[country,setCountry] = useState();
+  const[city,setCity] = useState();
+  const[current,setCurrent] = useState({});
+  const[daily,setDaily] = useState([]);
+  const[hourly,setHourly] = useState([]);
+  //const daily,hour;
 
   useEffect(() => { 
 
@@ -21,20 +22,44 @@ export default (props) => {
     }
     
     const apiKey = "e2d8fad26c0d32a8458b03ece38bb876";
+    const geoURL = `http://api.openweathermap.org/geo/1.0/direct?q=${props.location}&limit=1&appid=${apiKey}`;
     const URLOne = `http://api.openweathermap.org/data/2.5/weather?q=${props.location}&APPID=${apiKey}&units=metric&type=hours`;
 
-    fetch(URLOne)
+    const getWeatherInfo = (lat,long,apiKey) => {
+      const forecastURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&appid=${apiKey}&units=metric`;
+      fetch(forecastURL)
+      .then(res =>res.json())
+      .then(
+        (result) => {
+          if (result) {
+            setIsLoaded(true);
+            let weatherInfo = ForecastInfo(result);
+            setCurrent(weatherInfo.current);
+            setDaily(weatherInfo.daily);
+            setHourly(weatherInfo.hour);
+            console.log(result);
+          }
+        },
+        (error)=>{
+          setIsLoaded(true);
+          setError(error);
+        }
+      ).catch((error)=>{
+        setIsLoaded(true);
+        setError(error);
+      })
+    }
+
+    fetch(geoURL)
         .then(res =>res.json())
         .then(
             (result) => {
-              if (result.cod === 200) {
-                setIsLoaded(true);
-                setInfo(ForecastInfo(result));  
-                
-              } else {
-                setIsLoaded(true);
-                setError(result);
-                setInfo({});
+              if (result) {
+                setIsLoaded(false);
+                setCountry(result[0].country);
+                setCity(result[0].name);
+                console.log(result);
+                getWeatherInfo(result[0].lat,result[0].lon,apiKey);
               }
             },
             (error)=>{
@@ -48,6 +73,8 @@ export default (props) => {
     
   }, [props])
 
+  
+
   if (error) {
     return <div>{error.message}</div>
   }
@@ -58,53 +85,66 @@ export default (props) => {
 
   const CurrentWeather = () => {
     return (
-        <div className="container container-fluid text-left CardContainer mt-5">
-            <span className="float-left">Current Weather</span>
-            <h4>{info.location+","+info.country}</h4>
-            <div className="row justify-content-center align-items-center text-center">
-                <div className="col-12 col-sm-7 my-3">
-                    <div className="row mt-3">
-                      <div className="col">
-                        <img className="CurrentWeatherIcon" alt={info.description} src={info.iconURL}></img>
-                        <strong>{info.description}</strong>
-                      </div>
-                      <div className="col py-3 temptValue">
-                        <strong className="ml-6">{info.temperature}°C</strong>
-                      </div>
-                    </div>    
-                </div>
-                <div className="col-12 col-sm-5 mt-4">
-                    <h5 className="px-5 ">Feels like  {info.feels_like} °C</h5>
-                    <div className="row pt-2">
-                      <HighIcon className="col"/>
-                      <h6 className="col">High</h6>
-                      <h6 className="col">{info.max}°C</h6>
-                    </div>
-
-                    <div className="row">
-                      <LowIcon className="col"/>
-                      <h6 className="col">Low</h6>
-                      <span className="col"><strong >{info.min}°C</strong></span>
-                    </div>
-
-                    <div className="row py-2">
-                      <HumidityIcon className="col"/>
-                      <h6 className="col">Humidity</h6>
-                      <strong className="col">{info.humidity+" %"}</strong>
-                    </div>
-                    <div className="row">
-                      <WindIcon className="col"/>
-                      <p className="col">Wind</p>
-                      <strong className="col">{info.wind_speed+" mph"}</strong>
-                    </div>
-                    <div className="row">
-                      <PressureIcon className="col"/>
-                      <h6 className="col">Pressure</h6>
-                      <strong className="col">{info.pressure}</strong>
-                    </div>
-                </div>
+      <div>
+        <div className="container bg-white mt-3 pb-2 rounded">
+          <div className="headerTitle pt-3 ">
+            <h5>Weather Today in {city+", "+country}</h5>
+          </div>
+          <div className="row pb-4">
+            <div className="col headerTitle">
+              <div className="temptValue pt-3">{current.temperature}°c</div>
+              <div className="feelsLike">Feels Like</div>
+            </div>
+            <div className="col">
+              <img className="CurrentWeatherIcon" alt={current.description} src={current.icon}></img>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col px-4">
+              <div className="row listItem py-2">
+                <div className="col">Humidity</div>
+                <div className="col">{current.humidity} %</div>
               </div>
+            </div>
+            <div className="col px-4">
+              <div className="row listItem py-2">
+                <div className="col">Wind</div>
+                <div className="col">{current.windSpeed} m/s</div>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col px-4">
+              <div className="row listItem py-2">
+                <div className="col">Pressure</div>
+                <div className="col">{current.pressure} hPa</div>
+              </div>
+            </div>
+            <div className="col px-4">
+              <div className="row listItem py-2">
+                <div className="col">Visibility</div>
+                <div className="col">{current.visibility} mt</div>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col px-4">
+              <div className="row listItem py-2">
+                <div className="col">Sunrise</div>
+                <div className="col">{current.sunrise}</div>
+              </div>
+            </div>
+            <div className="col px-4">
+              <div className="row listItem py-2">
+                <div className="col">Sunset</div>
+                <div className="col">{current.sunset}</div>
+              </div>
+            </div>
+          </div>
         </div>
+        <DailyInfo dailyInfo={daily}/>
+      </div>
+        
     )
   }
 
