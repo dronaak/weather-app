@@ -11,11 +11,10 @@ export default (props) => {
   const[current,setCurrent] = useState({});
   const[daily,setDaily] = useState([]);
   const[hourly,setHourly] = useState([]);
-  //const daily,hour;
 
   useEffect(() => { 
 
-    if (!props.location) {
+    if (!props.location && !props.lat && !props.lon) {
       setError(null);
       setIsLoaded(false);
       return;
@@ -23,7 +22,7 @@ export default (props) => {
     
     const apiKey = "e2d8fad26c0d32a8458b03ece38bb876";
     const geoURL = `http://api.openweathermap.org/geo/1.0/direct?q=${props.location}&limit=1&appid=${apiKey}`;
-    const URLOne = `http://api.openweathermap.org/data/2.5/weather?q=${props.location}&APPID=${apiKey}&units=metric&type=hours`;
+    //const URLOne = `http://api.openweathermap.org/data/2.5/weather?q=${props.location}&APPID=${apiKey}&units=metric&type=hours`;
 
     const getWeatherInfo = (lat,long,apiKey) => {
       const forecastURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&appid=${apiKey}&units=metric`;
@@ -33,6 +32,7 @@ export default (props) => {
         (result) => {
           if (result) {
             setIsLoaded(true);
+            setError(null);
             let weatherInfo = ForecastInfo(result);
             setCurrent(weatherInfo.current);
             setDaily(weatherInfo.daily);
@@ -50,12 +50,14 @@ export default (props) => {
       })
     }
 
-    fetch(geoURL)
+    if ( !props.lat && !props.lon) {
+      fetch(geoURL)
         .then(res =>res.json())
         .then(
             (result) => {
               if (result) {
-                setIsLoaded(false);
+                setIsLoaded(true);
+                setError(null);
                 setCountry(result[0].country);
                 setCity(result[0].name);
                 console.log(result);
@@ -69,18 +71,25 @@ export default (props) => {
         ).catch((error)=>{
           setIsLoaded(true);
           setError(error);
-        })
+        })  
+    } else {
+      getWeatherInfo(props.lat,props.lon,apiKey);
+    }
     
   }, [props])
 
   
 
   if (error) {
-    return <div>{error.message}</div>
+    return <div className="container bg-white my-5 rounded">
+      <strong className="my-5">{error.message}</strong>
+    </div>
   }
 
   if (!isLoaded) {
-    return <div>search for the location</div>
+    return <div className="container bg-white my-5 rounded">
+      <strong className="my-5">search for a location</strong>
+    </div>
   }
 
   const CurrentWeather = () => {
